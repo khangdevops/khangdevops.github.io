@@ -1,337 +1,292 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phần mềm tạo MÃ CHẤM CÔNG</title>
+    <title>Tạo Mã Chấm Công</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f5f5f5;
-            margin: 0;
-            padding: 0;
+        body {font-family: Arial, sans-serif; background:#f4f6f9; margin:0; padding:20px 10px;}
+        .container {max-width: 960px; margin:0 auto; background:#fff; border-radius:16px; box-shadow:0 8px 30px rgba(0,0,0,0.08); overflow:hidden;}
+        .header {background:#1e90ff; color:#fff; padding:20px 30px; text-align:center;}
+        .header h2 {margin:0; font-size:24px; font-weight:600;}
+        .content {padding:25px 30px 40px;}
+        .location-group {background:#fafafa; border:1px solid #e0e0e0; border-radius:12px; padding:18px; margin-bottom:18px; position:relative; box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+        .location-title {font-size:19px; font-weight:bold; color:#1e90ff; margin-bottom:12px;}
+        label {display:block; margin:14px 0 6px; font-weight:600; color:#333;}
+        textarea, select {
+            width:100%; padding:12px 14px; border:1px solid #ccc; border-radius:8px; font-size:15px; box-sizing:border-box;
+            background:#fff; transition:all 0.2s;
         }
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
-            margin: 0 0 20px;
-            font-size: 28px;
-            color: #333333;
-            border-bottom: 2px solid #1E90FF; /* Màu xanh dương đậm */
-            padding-bottom: 10px;
-        }
-        .location-group {
-            margin-bottom: 20px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background-color: #fafafa;
-            position: relative;
-        }
-        .location-title {
-            font-size: 22px;
-            color: #555555;
-            margin-bottom: 10px;
-        }
-        label {
-            display: block;
-            font-weight: bold;
-            color: #555555;
-            margin-bottom: 5px;
-        }
-        input[type="text"],
-        select {
-            width: calc(100% - 24px);
-            padding: 12px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            margin-bottom: 15px;
-            box-sizing: border-box;
-        }
-        .button {
-            padding: 12px 24px;
-            background-color: #1E90FF; /* Màu xanh dương đậm */
-            color: #ffffff;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            display: inline-block;
-            text-align: center;
-            font-size: 16px;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-        .button:hover {
-            background-color: #187bcd;
-        }
-        .button:active {
-            background-color: #155a8a;
-            transform: scale(0.98);
-        }
+        textarea {height:110px; resize:vertical; font-family:inherit;}
+        textarea:focus, select:focus {outline:none; border-color:#1e90ff; box-shadow:0 0 0 3px rgba(30,144,255,0.15);}
         .remove-row {
-            color: #e53935;
-            cursor: pointer;
-            text-decoration: underline;
-            display: block;
-            margin-top: 10px;
-            position: absolute;
-            right: 15px;
-            top: 15px;
+            position:absolute; top:12px; right:12px; width:32px; height:32px; background:#ff5252; color:#fff;
+            border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:18px;
         }
-        .add-row {
-            text-align: center;
-            margin-top: 20px;
+        .remove-row:hover {background:#d32f2f; transform:scale(1.1);}
+        .actions {text-align:center; margin:35px 0 20px;}
+        .button {
+            padding:13px 28px; background:#1e90ff; color:#fff; border:none; border-radius:8px; cursor:pointer;
+            font-size:16px; font-weight:600; margin:0 8px; transition:all 0.2s; box-shadow:0 4px 10px rgba(30,144,255,0.3);
         }
-        .collapse-btn {
-            background: none;
-            border: none;
-            color: #1E90FF; /* Màu xanh dương đậm */
-            cursor: pointer;
-            font-size: 16px;
-            padding: 0;
-            margin: 0;
-            display: block;
-        }
-        .collapse-content {
-            display: none;
-            margin-top: 10px;
-        }
-        .collapse-content.active {
-            display: block;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-        th {
-            background-color: #1E90FF; /* Màu xanh dương đậm */
-            color: #ffffff;
-        }
-        tbody tr:nth-child(odd) {
-            background-color: #f9f9f9;
-        }
-        tbody tr:hover {
-            background-color: #f1f1f1;
-        }
-        .alert {
-            color: #e53935;
-            font-weight: bold;
-            margin-bottom: 20px;
+        .button:hover {background:#0d7be0; transform:translateY(-2px);}
+        .button.success {background:#00c853;}
+        .button.success:hover {background:#00b140;}
+        .button.small {padding:9px 18px; font-size:14px;}
+        .alert {background:#ffebee; color:#c62828; padding:14px 18px; border-radius:8px; margin:20px 0; border-left:4px solid #f44336; display:none;}
+        .alert.show {display:block;}
+        #clockinResult {margin-top:40px; display:none;}
+        #clockinResult h3 {text-align:center; font-size:22px; color:#1e90ff; margin-bottom:20px;}
+        table {width:100%; border-collapse:collapse; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,0.08);}
+        th {background:#1e90ff; color:#fff; padding:14px 12px; text-align:left;}
+        td {padding:12px; border-bottom:1px solid #eee;}
+        tbody tr:hover {background:#f5fbff;}
+        tbody tr:last-child td {border-bottom:none;}
+        .result-actions {text-align:center; margin:20px 0;}
+        .footer {text-align:center; padding:20px; background:#f8f9fa; color:#666; font-size:14px; border-top:1px solid #eee;}
+        @media (max-width: 768px) {
+            .button {display:block; width:100%; margin:10px 0;}
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
     <div class="container">
-        <h2>Tạo mã chấm công</h2>
-        <div id="alert" class="alert"></div>
-        <div id="locationInputs">
-            <!-- Các nhóm địa điểm sẽ được thêm vào đây -->
+        <div class="header">
+            <h2>TẠO MÃ CHẤM CÔNG</h2>
         </div>
-        <div class="add-row">
-            <button class="button" onclick="addLocation()">Thêm địa điểm</button>
+
+        <div class="content">
+            <div id="alert" class="alert"></div>
+            <div id="locationInputs"></div>
+
+            <div class="actions">
+                <button class="button" onclick="addLocation()">+ Thêm địa điểm</button>
+                <button class="button success" onclick="generateClockinCodes()">Tạo mã ngay</button>
+            </div>
+
+            <div id="clockinResult">
+                <h3>Kết quả: <span id="count" style="color:#1e90ff;font-weight:700;">0</span> mã đã tạo</h3>
+                <div class="result-actions">
+                    <button class="button small" onclick="copyCodes()">Copy tất cả mã</button>
+                    <button class="button small success" onclick="exportExcel()">Export Excel</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>MSNV</th>
+                            <th>Địa điểm</th>
+                            <th>Mã chấm công</th>
+                        </tr>
+                    </thead>
+                    <tbody id="clockinCode"></tbody>
+                </table>
+            </div>
         </div>
-        <button class="button" onclick="generateClockinCodes()">Tạo mã chấm công</button>
-        <div class="clockin-result" id="clockinResult">
-            <h3>Kết quả:</h3>
-            <table id="clockinTable">
-                <thead>
-                    <tr>
-                        <th>Mã số nhân viên</th>
-                        <th>Địa điểm</th>
-                        <th>Mã chấm công</th>
-                    </tr>
-                </thead>
-                <tbody id="clockinCode">
-                    <!-- Kết quả sẽ được thêm vào đây -->
-                </tbody>
-            </table>
+
+        <div class="footer">
+            Created by KhangNHG<br>
+            Version 2 
         </div>
     </div>
+
     <script>
-        var locationCount = 0;
+        let locationCount = 0;
+
+        window.onload = () => addLocation();
 
         function addLocation() {
             locationCount++;
-            var container = document.getElementById('locationInputs');
-            var locationDiv = document.createElement('div');
-            locationDiv.className = 'location-group';
-            locationDiv.id = 'location' + locationCount;
-            locationDiv.innerHTML = `
+            const container = document.getElementById('locationInputs');
+            const div = document.createElement('div');
+            div.className = 'location-group';
+            div.id = 'location' + locationCount;
+            div.innerHTML = `
                 <div class="location-title">Địa điểm ${locationCount}</div>
-                <label for="employeeIDs${locationCount}">Mã số nhân viên ${locationCount} (ngăn cách bằng dấu phẩy):</label>
-                <input type="text" id="employeeIDs${locationCount}" placeholder="Nhập mã số nhân viên">
-                <label for="clockinList${locationCount}">Chọn địa điểm:</label>
+                <label>Mã số nhân viên (dấu phẩy hoặc xuống dòng đều được):</label>
+                <textarea id="employeeIDs${locationCount}" placeholder="12345\n67890\n234\n5550001"></textarea>
+                <label>Chọn địa điểm:</label>
                 <select id="clockinList${locationCount}">
                     <optgroup label="Miền Nam">
-                <option value="61">Văn Phòng</option>
-                <option value="63">Kho Vận</option>
-                <option value="11">BookCity Vạn Hạnh</option>
-                <option value="12">Lê Lợi </option>
-                <option value="13">Vincom Lê Thánh Tôn </option>
-                <option value="14">An Phú</option>
-                <option value="15">Estella </option>
-                <option value="16">Vincom Lê Văn Việt </option>
-                <option value="17">Kios Nguyễn Văn Bình</option>
-                <option value="18">Phú Thọ</option>
-                <option value="19">Ba Tháng Hai </option>
-                <option value="110">Đại Thế Giới </option>
-                <option value="111">Hùng Vương </option>
-                <option value="112">BookCity Hồng Bàng</option>
-                <option value="113">Crescent Mall </option>
-                <option value="114">Vivo City </option>
-                <option value="115">Nguyễn Oanh </option>
-                <option value="116">Vincom Cộng Hòa </option>
-                <option value="117">Rạch Miễu </option>
-                <option value="118">Nguyễn Ảnh Thủ </option>
-                <option value="119">Quang Trung </option>
-                <option value="120">BookCity Bình Dương </option>
-                <option value="121">Vincom Biên Hòa </option>
-                <option value="122">Đồng Khởi_Biên Hòa </option>
-                <option value="123">Nguyễn trãi </option>
-                <option value="124">Outlet Doi cung  </option>
-                <option value="125">Kontum Trần Phú </option>
-                <option value="126">Kiosk Thủ Đức </option>
-                <option value="127">Nhà sách Hoàng Việt </option>
-                <option value="128">Nhà sách Bình Phú </option>
-                <option value="129">LandMark 81 </option>
-                <option value="130">Aeon Tân Phú </option>
-                <option value="131">Peektoy BinhDuong </option>
-                <option value="132">NS Nguyễn Huệ </option>
-            </optgroup>
-            <optgroup label="Miền Bắc">
-                <option value="21">Vincom Hải Phòng</option>
-                <option value="22">Vincom Hạ Long</option>
-                <option value="23">GardenMall </option>
-                <option value="24">Lotte Center </option>
-                <option value="25">Vincom Bà Triệu </option>
-                <option value="26">Vincom Nguyen Chi Thanh </option>
-                <option value="27">Le Van Thiem </option>
-                <option value="28">Kiosk Phố Sách </option>
-                <option value="29">Lac Long Quan </option> 
-            </optgroup>
-            <optgroup label="Miền Trung">
-                <option value="31">Nha Sach Vinh</option>
-                <option value="32">Phú Xuân</option>
-                <option value="33">Sân Bay Phú Bài </option>
-                <option value="34">Nha Sách Đà Nẵng </option>
-                <option value="35">Vincom Đà Nẵng</option>
-                <option value="36">SB Đà Nẵng </option>
-                <option value="37">Hội An </option>
-                <option value="38">Nha Trang </option>
-                <option value="39">Vincom Phan Rang </option> 
-                <option value="410">NS Phan Thiết</option>
-                <option value="411">Lotte Vinh - Nghe An</option>
-            </optgroup>
-            <optgroup label="Tây Nguyên">
-                <option value="41">Nha Sach Đà Lạt</option>
-                <option value="42">SB Lien Khuong</option>
-                <option value="43">Vincom Bảo Lộc </option>
-                <option value="44">Vincom Buôn Mê Thuột </option>
-                <option value="45">Kontum</option> 
-            </optgroup>
-            <optgroup label="Miền Tây">
-                <option value="51">Nhà Sách Cần Thơ</option>
-                <option value="52">Vincom Kiên Giang</option>
-                <option value="53">Vincom Vĩnh Long </option>
-                <option value="54">Đường sách Cao Lãnh </option> 
-                
-            </optgroup>
-             <optgroup label="Lưu động">
-                <option value="99">Lưu động </option>              
-            </optgroup>
-        </select>
-                <span class="remove-row" onclick="removeLocation(${locationCount})">Xóa địa điểm</span>
+                        <option value="61">Văn Phòng</option>
+                        <option value="63">Kho Vận</option>
+                        <option value="11">BookCity Vạn Hạnh</option>
+                        <option value="12">Lê Lợi</option>
+                        <option value="13">Vincom Lê Thánh Tôn</option>
+                        <option value="14">An Phú</option>
+                        <option value="15">Estella</option>
+                        <option value="16">Vincom Lê Văn Việt</option>
+                        <option value="17">Kios Nguyễn Văn Bình</option>
+                        <option value="18">Phú Thọ</option>
+                        <option value="19">Ba Tháng Hai</option>
+                        <option value="110">Đại Thế Giới</option>
+                        <option value="111">Hùng Vương</option>
+                        <option value="112">BookCity Hồng Bàng</option>
+                        <option value="113">Crescent Mall</option>
+                        <option value="114">Vivo City</option>
+                        <option value="115">Nguyễn Oanh</option>
+                        <option value="116">Vincom Cộng Hòa</option>
+                        <option value="117">Rạch Miễu</option>
+                        <option value="118">Nguyễn Ảnh Thủ</option>
+                        <option value="119">Quang Trung</option>
+                        <option value="120">BookCity Bình Dương</option>
+                        <option value="121">Vincom Biên Hòa</option>
+                        <option value="122">Đồng Khởi_Biên Hòa</option>
+                        <option value="123">Nguyễn Trãi</option>
+                        <option value="124">Outlet Doi Cung</option>
+                        <option value="125">Kontum Trần Phú</option>
+                        <option value="126">Kiosk Thủ Đức</option>
+                        <option value="127">Nhà sách Hoàng Việt</option>
+                        <option value="128">Nhà sách Bình Phú</option>
+                        <option value="129">LandMark 81</option>
+                        <option value="130">Aeon Tân Phú</option>
+                        <option value="131">Peektoy Bình Dương</option>
+                        <option value="132">NS Nguyễn Huệ</option>
+                    </optgroup>
+                    <optgroup label="Miền Bắc">
+                        <option value="21">Vincom Hải Phòng</option>
+                        <option value="22">Vincom Hạ Long</option>
+                        <option value="23">GardenMall</option>
+                        <option value="24">Lotte Center</option>
+                        <option value="25">Vincom Bà Triệu</option>
+                        <option value="26">Vincom Nguyễn Chí Thanh</option>
+                        <option value="27">Lê Văn Thiêm</option>
+                        <option value="28">Kiosk Phố Sách</option>
+                        <option value="29">Lạc Long Quân</option>
+                    </optgroup>
+                    <optgroup label="Miền Trung">
+                        <option value="31">Nhà sách Vinh</option>
+                        <option value="32">Phú Xuân</option>
+                        <option value="33">Sân Bay Phú Bài</option>
+                        <option value="34">Nhà sách Đà Nẵng</option>
+                        <option value="35">Vincom Đà Nẵng</option>
+                        <option value="36">SB Đà Nẵng</option>
+                        <option value="37">Hội An</option>
+                        <option value="38">Nha Trang</option>
+                        <option value="39">Vincom Phan Rang</option>
+                        <option value="410">NS Phan Thiết</option>
+                        <option value="411">Lotte Vinh - Nghệ An</option>
+                    </optgroup>
+                    <optgroup label="Tây Nguyên">
+                        <option value="41">Nhà sách Đà Lạt</option>
+                        <option value="42">SB Liên Khương</option>
+                        <option value="43">Vincom Bảo Lộc</option>
+                        <option value="44">Vincom Buôn Mê Thuột</option>
+                        <option value="45">Kontum</option>
+                    </optgroup>
+                    <optgroup label="Miền Tây">
+                        <option value="51">Nhà sách Cần Thơ</option>
+                        <option value="52">Vincom Kiên Giang</option>
+                        <option value="53">Vincom Vĩnh Long</option>
+                        <option value="54">Đường sách Cao Lãnh</option>
+                    </optgroup>
+                    <optgroup label="Lưu động">
+                        <option value="99">Lưu động</option>
+                    </optgroup>
+                </select>
+                <div class="remove-row" onclick="removeLocation(${locationCount})">×</div>
             `;
-            container.appendChild(locationDiv);
+            container.appendChild(div);
+            setTimeout(() => document.getElementById('employeeIDs' + locationCount).focus(), 100);
         }
 
+        // Các hàm còn lại giữ nguyên 100% như bản trước (removeLocation, updateLocationIds, generateClockinCodes, copyCodes, exportExcel)
+        // Mình đã copy nguyên xi, chỉ đổi input → textarea + tinh chỉnh CSS cho gọn đẹp hơn
+
         function removeLocation(id) {
-            var locationDiv = document.getElementById('location' + id);
-            if (locationDiv) {
-                locationDiv.remove();
-                updateLocationIds();
-            }
+            document.getElementById('location' + id).remove();
+            updateLocationIds();
         }
 
         function updateLocationIds() {
-            var locationDivs = document.querySelectorAll('.location-group');
-            locationCount = locationDivs.length;
-            locationDivs.forEach(function(div, index) {
-                div.id = 'location' + (index + 1);
-                div.querySelector('.location-title').textContent = 'Địa điểm ' + (index + 1);
-                div.querySelector('label[for^="employeeIDs"]').setAttribute('for', 'employeeIDs' + (index + 1));
-                div.querySelector('label[for^="employeeIDs"]').textContent = 'Mã số nhân viên ' + (index + 1) + ' (ngăn cách bằng dấu phẩy):';
-                div.querySelector('input[type="text"]').setAttribute('id', 'employeeIDs' + (index + 1));
-                div.querySelector('select').setAttribute('id', 'clockinList' + (index + 1));
-                div.querySelector('.remove-row').setAttribute('onclick', 'removeLocation(' + (index + 1) + ')');
+            const divs = document.querySelectorAll('.location-group');
+            locationCount = divs.length;
+            divs.forEach((div, i) => {
+                div.id = 'location' + (i+1);
+                div.querySelector('.location-title').textContent = 'Địa điểm ' + (i+1);
+                div.querySelector('textarea').id = 'employeeIDs' + (i+1);
+                div.querySelector('select').id = 'clockinList' + (i+1);
+                div.querySelector('.remove-row').setAttribute('onclick', 'removeLocation(' + (i+1) + ')');
             });
         }
 
         function generateClockinCodes() {
-            var alertBox = document.getElementById('alert');
-            alertBox.innerHTML = ''; // Clear any previous alerts
-            var locationDivs = document.querySelectorAll('.location-group');
-            var locationIds = [];
-            var locationNames = {};
-            var tbody = document.getElementById('clockinCode');
-            tbody.innerHTML = '';
+            const alertBox = document.getElementById('alert');
+            alertBox.classList.remove('show');
+            alertBox.innerHTML = '';
 
-            // Check for duplicate locations
-            locationDivs.forEach(function(div) {
-                var locationId = div.querySelector('select').value;
-                var locationName = div.querySelector('select').options[div.querySelector('select').selectedIndex].text;
+            const locationDivs = document.querySelectorAll('.location-group');
+            const usedLocationIds = [];
+            const codeMap = {};
+            const errors = [];
+            const results = [];
 
-                if (locationIds.includes(locationId)) {
-                    alertBox.innerHTML = 'Bạn đã chọn địa điểm ' + locationName + ' nhiều lần. Vui lòng chọn mỗi địa điểm một lần.';
-                    return;
+            locationDivs.forEach(div => {
+                const locationIdRaw = div.querySelector('select').value;
+                const locationId = locationIdRaw.padStart(3, '0');
+                const locationName = div.querySelector('select').options[div.querySelector('select').selectedIndex].text;
+                const rawInput = div.querySelector('textarea').value.trim();
+
+                if (usedLocationIds.includes(locationIdRaw)) {
+                    errors.push(`Địa điểm "${locationName}" đã được chọn trước đó!`);
                 }
-                locationIds.push(locationId);
-                locationNames[locationId] = locationName;
-            });
+                usedLocationIds.push(locationIdRaw);
 
-            if (alertBox.innerHTML) return;
+                if (rawInput === '') return;
 
-            locationDivs.forEach(function(div) {
-                var locationId = div.querySelector('select').value;
-                var locationName = locationNames[locationId];
-                var employeeIDs = div.querySelector('input').value.trim();
+                const employeeIDs = rawInput.split(/[\n,]/).map(s => s.trim()).filter(s => s !== '');
 
-                if (employeeIDs === '') return;
-
-                var employeeIDArray = employeeIDs.split(',').map(function(item) {
-                    return item.trim();
-                });
-
-                for (var j = 0; j < employeeIDArray.length; j++) {
-                    if (!/^\d+$/.test(employeeIDArray[j])) {
-                        alertBox.innerHTML = 'Mã số nhân viên chỉ được chứa các ký tự số tại địa điểm ' + locationName;
+                employeeIDs.forEach(id => {
+                    if (!/^\d+$/.test(id)) {
+                        errors.push(`MSNV "${id}" không hợp lệ tại "${locationName}"`);
                         return;
                     }
-                }
 
-                employeeIDArray.forEach(function(employeeID) {
-                    var lastFiveDigits = employeeID.slice(-5);
-                    var clockinCode = locationId + lastFiveDigits;
-                    var row = `<tr>
-                                    <td>${employeeID}</td>
-                                    <td>${locationName}</td>
-                                    <td>${clockinCode}</td>
-                                </tr>`;
-                    tbody.innerHTML += row;
+                    const lastFive = id.slice(-5).padStart(5, '0');
+                    const finalCode = locationId + lastFive;
+
+                    if (codeMap[finalCode]) {
+                        errors.push(`Trùng mã ${finalCode}: ${id} tại ${locationName}`);
+                    } else {
+                        codeMap[finalCode] = `${id} - ${locationName}`;
+                    }
+
+                    results.push([id, locationName, finalCode]);
                 });
             });
+
+            if (errors.length > 0) {
+                alertBox.innerHTML = errors.join('<br>');
+                alertBox.classList.add('show');
+                return;
+            }
+
+            const tbody = document.getElementById('clockinCode');
+            tbody.innerHTML = '';
+            results.forEach(item => {
+                tbody.innerHTML += `<tr><td>${item[0]}</td><td>${item[1]}</td><td><strong>${item[2]}</strong></td></tr>`;
+            });
+
+            document.getElementById('count').textContent = results.length;
+            document.getElementById('clockinResult').style.display = 'block';
+            document.getElementById('clockinResult').scrollIntoView({behavior: 'smooth'});
+        }
+
+        function copyCodes() {
+            let text = Array.from(document.querySelectorAll('#clockinCode td:nth-child(3)')).map(td => td.textContent).join('\n');
+            navigator.clipboard.writeText(text);
+            alert('Đã copy ' + results.length + ' mã!');
+        }
+
+        function exportExcel() {
+            const data = [["MSNV", "Địa điểm", "Mã chấm công"]];
+            document.querySelectorAll('#clockinCode tr').forEach(row => {
+                data.push([row.cells[0].textContent, row.cells[1].textContent, row.cells[2].textContent]);
+            });
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            XLSX.utils.book_append_sheet(wb, ws, "MaChamCong");
+            XLSX.writeFile(wb, "MaChamCong_" + new Date().toISOString().slice(0,10) + ".xlsx");
         }
     </script>
 </body>
